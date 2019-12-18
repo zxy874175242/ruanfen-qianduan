@@ -11,8 +11,8 @@
         <a href="#" class="item">赞助我们</a>
       </div>
     </div>
-    <div class="main" style="display:flex">
-      <div class="article" style="width: 70%;text-align: left;border-top:5px solid #343434;">
+    <div class="main">
+      <div class="article" style="width: 75%;text-align: left;border-top:5px solid #343434;">
         <!--        <div style="height: 5px;width: 100%;background: #6aa0b2"></div>-->
         <div style="height: 100%;width: 100%;padding: 20px 30px">
 <!--          <div class="userheadcontent">-->
@@ -41,8 +41,9 @@
 
             <div class="userheadleft">
               <div class="title">是个学者</div>
-              <div class="status">性别：男,年龄：35</div>
-              <div class="status">被 15 人关注</div>
+              <div class="userstatus">粉丝数：15人</div>
+              <div class="userstatus">发表文献：XX篇</div>
+              <div class="userstatus">所属单位：XX研究院</div>
               <!--              关注量：{{userInfo.guanzhucount}}-->
             </div>
           <div class="userheadright">
@@ -54,16 +55,35 @@
 
           <div class="usercontent">
             <div class="userleft">
-              <div class="userposttext" style = "width: 100px;">用户作品列表</div>
+              <div class="userposttext" style = "width: 100px;">个人简介</div>
               <div style="width: 100%;height: 1px;background: darkgray"></div>
-              <div class="content" v-for="blog in blogList">
-                <div class="itemis">
-                  <a>
-                    <div class="posttitle" @click="gotoBlog(blog.id)">{{blog.title}}</div>
-                  </a>
-                  <div class="status">发布于：{{blog.date}} | 作者：{{blog.username}} </div>
+
+              <div class="userintro">曹翀，女，现任北京航空航天大学新媒体艺术与设计学院讲师、虚拟现实技术与系统国家重点实验室成员。分别于于清华大学计算机系、人机交互与媒体集成研究所获学士学位与博士学位。博士期间作为国家留学基金委联合培养博士赴美国加州大学迭戈分校（UCSD）计算机视觉与图形学实验室实验室从事人脸检索与美观评价方向研究。主要研究方向包括计算机视觉、图像处理、互动媒体设计、XR交互设计等。</div>
+
+              <div class="userposttext" style = "width: 100px;">研究方向</div>
+              <div style="width: 100%;height: 1px;background: darkgray"></div>
+              <div class="userintro">主要研究方向包括计算机视觉、图像处理、互动媒体设计、XR交互设计等。</div>
+
+              <div class="userposttext" style = "width: 100px;">发表文献</div>
+              <div style="width: 100%;height: 1px;background: darkgray"></div>
+              <router-link :to="{name: 'Resource', params:{type:'blog', keyword: 'all'}}">
+                <div style="margin-top: 20px" class="resultcard">
+                <div style="vertical-align: bottom;margin-bottom: 5px">
+                  <div class="cardtitle" >是文章的题目</div>
+                  <div class="cardauthor" >是个作者</div>
+                  <div class="cardyear" >2019</div>
                 </div>
+                <div style="color: rgba(0,0,0,0.6)">层叠样式表(英文全称：Cascading Style Sheets)是一种用来表现HTML（标准通用标记…</div>
               </div>
+              </router-link>
+<!--              <div class="content" v-for="blog in blogList">-->
+<!--                <div class="itemis">-->
+<!--                  <a>-->
+<!--                    <div class="posttitle" @click="gotoBlog(blog.id)">{{blog.title}}</div>-->
+<!--                  </a>-->
+<!--                  <div class="status">发布于：{{blog.date}} | 作者：{{blog.username}} </div>-->
+<!--                </div>-->
+<!--              </div>-->
             </div>
 
           <!--            <div class="isline-2"></div>-->
@@ -88,7 +108,7 @@
       </div>
 
     </div>
-    <div class="article" style="flex: 1;padding: 20px 20px;border-top:5px solid #343434;">
+    <div class="article" style="display:none;flex: 1;padding: 20px 20px;border-top:5px solid #343434;">
       <div class="isline-2"></div>
       <!--        <div class="userright">-->
       <div class="userposttext">用户资源列表</div>
@@ -556,6 +576,36 @@
     background-image: url("../assets/logo-circle-title-b.png");
 
   }
+  .resultcard{
+    width: 100%;
+    background: #f1f1f1;
+    border-left: #3e606b solid 3px;
+    padding: 10px 10px 10px 20px;
+    margin-bottom: 7px;
+    margin-top: 8px;
+
+  }
+  .resultcard:hover{
+
+    border-left: #63b2c3 solid 5px;
+    transition: border-left-width 0.3s,border-left-color 0.3s;
+  }
+  .cardtitle{
+    color: rgba(0, 0, 0,0.8);
+    font-size: 20px;
+    font-weight: bold;
+    display: inline-block;
+  }
+  .cardauthor{
+    color: rgba(0, 0, 0,0.7);
+    font-size: 15px;
+    display: inline-block;
+  }
+  .cardyear{
+    color: rgba(0, 0, 0,0.7);
+    font-size: 12px;font-style: italic;
+    display: inline-block;
+  }
   .userheadleft{
     flex: 1;
     height: 100%;
@@ -572,6 +622,12 @@
 
   .usercontent{
     display: flex;
+  }
+  .userintro{
+    font-size: 14px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    line-height: 25px;
   }
   .userleft{
     /*width: 65%;*/
@@ -631,7 +687,10 @@
     border-left: 5px solid rgb(166, 218, 221);
 
   }
-
+  .userstatus{
+    font-size: 12px;
+    color: darkgray;
+  }
   .content-2{
     vertical-align: center;
     text-align: center;
@@ -654,7 +713,7 @@
   .isline{
     height: 1px;
     width: 100%;
-    background: rgb(0, 0, 0,0.3);
+    background: rgba(0, 0, 0,0.3);
     margin-top: 20px;
     margin-bottom: 20px;
   }

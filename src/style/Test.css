@@ -17,3 +17,44 @@
 .searchbuttom:active{
   background: black;
 }
+.topbar{
+  width: 100%;
+  height: 150px;
+  background: aliceblue;
+}
+.isline{
+  height: 1px;
+  width: 100%;
+  background: rgba(0, 0, 0,0.3);
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+.resultcard{
+  width: 100%;
+  background: #f1f1f1;
+  border-left: #3e606b solid 3px;
+  padding: 10px 10px 10px 20px;
+  margin-bottom: 7px;
+  margin-top: 8px;
+
+}
+.resultcard:hover{
+
+  border-left: #63b2c3 solid 5px;
+  transition: border-left-width 0.3s,border-left-color 0.3s;
+}
+.cardtitle{
+  color: black;
+  font-size: 20px;font-weight: bold;
+  display: inline-block;
+}
+.cardauthor{
+  color: black;
+  font-size: 15px;
+  display: inline-block;
+}
+.cardyear{
+  color: black;
+  font-size: 12px;font-style: italic;
+  display: inline-block;
+}

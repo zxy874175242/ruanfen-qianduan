@@ -4,15 +4,18 @@
       <div class = "topbar">
       </div>
 <!--      测试用？-->
-      <router-link :to="{name: 'Approval', params:{type:'blog', keyword: 'all'}}"><div class="searchbuttom">Approval</div></router-link>
-      <router-link :to="{name: 'Professor', params:{type:'blog', keyword: 'all'}}"><div class="searchbuttom">professor</div></router-link>
-      <router-link :to="{name: 'Certificate', params:{type:'blog', keyword: 'all'}}"><div class="searchbuttom">Certificate</div></router-link>
-      <router-link :to="{name: 'Certificateinfo', params:{type:'blog', keyword: 'all'}}"><div class="searchbuttom">Certificateinfo</div></router-link>
-      <router-link :to="{name: 'Manageuser', params:{type:'blog', keyword: 'all'}}"><div class="searchbuttom">Manageuser</div></router-link>
-      <router-link :to="{name: 'Preview', params:{type:'blog', keyword: 'all'}}"><div class="searchbuttom">Preview</div></router-link>
-      <router-link :to="{name: 'Release', params:{type:'blog', keyword: 'all'}}"><div class="searchbuttom">Release</div></router-link>
-      <router-link :to="{name: 'Resource', params:{type:'blog', keyword: 'all'}}"><div class="searchbuttom">Resource</div></router-link>
-      <router-link :to="{name: 'Result', params:{type:'blog', keyword: 'all'}}"><div class="searchbuttom">Result</div></router-link>
+      <div >
+        <router-link :to="{name: 'Approval', params:{type:'blog', keyword: 'all'}}"><div class="searchbuttom">Approval</div></router-link>
+        <router-link :to="{name: 'Professor', params:{type:'blog', keyword: 'all'}}"><div class="searchbuttom">professor</div></router-link>
+        <router-link :to="{name: 'Certificate', params:{type:'blog', keyword: 'all'}}"><div class="searchbuttom">Certificate</div></router-link>
+        <router-link :to="{name: 'Certificateinfo', params:{type:'blog', keyword: 'all'}}"><div class="searchbuttom">Certificateinfo</div></router-link>
+        <router-link :to="{name: 'Manageuser', params:{type:'blog', keyword: 'all'}}"><div class="searchbuttom">Manageuser</div></router-link>
+        <router-link :to="{name: 'Preview', params:{type:'blog', keyword: 'all'}}"><div class="searchbuttom">Preview</div></router-link>
+        <router-link :to="{name: 'Release', params:{type:'blog', keyword: 'all'}}"><div class="searchbuttom">Release</div></router-link>
+        <router-link :to="{name: 'Resource', params:{type:'blog', keyword: 'all'}}"><div class="searchbuttom">Resource</div></router-link>
+        <router-link :to="{name: 'Result', params:{type:'blog', keyword: 'all'}}"><div class="searchbuttom">Result</div></router-link>
+
+      </div>
 <!--      测试用-->
       <div style="padding: 20px 40px 70px">
         <el-tabs v-model="activeName" @tab-click="handleClick">
@@ -24,13 +27,13 @@
                 <option value="篇名">篇名</option>
                 <option value="作者">作者</option>
               </select>
-              <div class = "searchbuttom "><div>搜索</div></div>
+              <router-link :to="{name: 'Result', params:{type:'blog', keyword: 'all'}}"><div class = "searchbuttom "><div>搜索</div></div></router-link>
             </div>
           </el-tab-pane>
           <el-tab-pane label="高级搜索" name="second">
             <div style="margin-bottom: 20px">
               <input class="searchbox" type="text" name="fname" />
-              <div class = "searchbuttom "><div>搜索</div></div>
+              <router-link :to="{name: 'Result', params:{type:'blog', keyword: 'all'}}"><div class = "searchbuttom "><div>搜索</div></div></router-link>
             </div>
           </el-tab-pane>
 <!--          <el-tab-pane label="角色管理" name="third">角色管理</el-tab-pane>-->
@@ -191,11 +194,7 @@
     text-align: left;
     background: #f1f1f1;
   }
-  .topbar{
-    width: 100%;
-    height: 150px;
-    background: aliceblue;
-  }
+
   .homecontainer{
     width: 65%;
     height: auto;
