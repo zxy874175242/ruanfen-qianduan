@@ -1,0 +1,19 @@
+.searchbuttom {
+  display: inline-block;
+  height: 40px;
+  width:15%;
+  background: #3e606b;
+  text-align: center;
+  vertical-align:middle;
+  line-height: 40px;
+  font-size: 14px;
+  color: #ffffff;
+  border-radius: 10px;
+  margin-left: 5px;
+}
+.searchbuttom:hover{
+  background: #63b2c3;
+}
+.searchbuttom:active{
+  background: black;
+}
