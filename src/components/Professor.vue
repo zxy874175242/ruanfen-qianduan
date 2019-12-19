@@ -35,15 +35,15 @@
 <!--          先随便写一点了-->
           <div class="userheadcontent" style="margin-bottom: 30px">
 
-            <div style="position: relative;width: 90px;overflow: hidden;height: 90px;margin-right: 15px;margin-left: 5x">
+            <div style="position: relative;width: 90px;overflow: hidden;height: 90px;margin-right: 15px;margin-left: 5px">
                 <img id="userImg" style="position: absolute;height: 90px">
             </div>
 
             <div class="userheadleft">
-              <div class="title">是个学者</div>
-              <div class="userstatus">粉丝数：15人</div>
-              <div class="userstatus">发表文献：XX篇</div>
-              <div class="userstatus">所属单位：XX研究院</div>
+              <div class="title">{{expertInfo.RealName}}</div>
+              <div class="status">粉 丝 数:{{}}</div>
+              <div class="status">发表文献:{{expertInfo.ResourecesNumber}}</div>
+              <div class="status">所属单位:{{expertInfo.Company}}</div>
               <!--              关注量：{{userInfo.guanzhucount}}-->
             </div>
           <div class="userheadright">
@@ -58,24 +58,30 @@
               <div class="userposttext" style = "width: 100px;">个人简介</div>
               <div style="width: 100%;height: 1px;background: darkgray"></div>
 
-              <div class="userintro">曹翀，女，现任北京航空航天大学新媒体艺术与设计学院讲师、虚拟现实技术与系统国家重点实验室成员。分别于于清华大学计算机系、人机交互与媒体集成研究所获学士学位与博士学位。博士期间作为国家留学基金委联合培养博士赴美国加州大学迭戈分校（UCSD）计算机视觉与图形学实验室实验室从事人脸检索与美观评价方向研究。主要研究方向包括计算机视觉、图像处理、互动媒体设计、XR交互设计等。</div>
+              <div class="userintro">{{expertInfo.Profile}}</div>
 
               <div class="userposttext" style = "width: 100px;">研究方向</div>
               <div style="width: 100%;height: 1px;background: darkgray"></div>
-              <div class="userintro">主要研究方向包括计算机视觉、图像处理、互动媒体设计、XR交互设计等。</div>
+              <div class="userintro">{{expertInfo.Education}}</div>
 
-              <div class="userposttext" style = "width: 100px;">发表文献</div>
-              <div style="width: 100%;height: 1px;background: darkgray"></div>
-              <router-link :to="{name: 'Resource', params:{type:'blog', keyword: 'all'}}">
-                <div style="margin-top: 20px" class="resultcard">
-                <div style="vertical-align: bottom;margin-bottom: 5px">
-                  <div class="cardtitle" >是文章的题目</div>
-                  <div class="cardauthor" >是个作者</div>
-                  <div class="cardyear" >2019</div>
+              <div class="userleft">
+                <div class="userposttext">发表文献</div>
+                <div class="isline1"></div>
+                <div class="isline"></div>
+                <div class="content" v-for="resource in resourceList">
+                  <div class="article1" style="width: 100%;text-align: left;border-top:0px solid #faeae8;">
+                    <div class="itemis">
+                      <a>
+                        <div class="cardtitle" @click="gotoResource(resource.id)">{{resource.title}}</div>
+                        <div class="status1"> 摘要如下：</div>
+                      </a>
+                      <div style="color: rgba(0,0,0,0.6)">{{resource.Abstract}}  </div>
+                    </div>
+                  </div>
                 </div>
-                <div style="color: rgba(0,0,0,0.6)">层叠样式表(英文全称：Cascading Style Sheets)是一种用来表现HTML（标准通用标记…</div>
               </div>
-              </router-link>
+
+
 <!--              <div class="content" v-for="blog in blogList">-->
 <!--                <div class="itemis">-->
 <!--                  <a>-->
@@ -108,20 +114,7 @@
       </div>
 
     </div>
-    <div class="article" style="display:none;flex: 1;padding: 20px 20px;border-top:5px solid #343434;">
-      <div class="isline-2"></div>
-      <!--        <div class="userright">-->
-      <div class="userposttext">用户资源列表</div>
-      <div class="content-2" style="line-height: 35px" v-for="re in resourceList">
-        <!--            <div class="itemis">-->
-        <!--              <div >-->
-        <div class="posttitle" @click="downRes(re.url)"><a>{{re.resourcename}}</a></div>
-        <!--              </div>-->
-        <!--              <div class="status">发布于：{{blog.date}}</div>-->
-        <!--            </div>-->
-      </div>
-      <!--        </div>-->
-    </div>
+
   </div>
     <div>
       <div>
@@ -142,425 +135,250 @@
 </template>
 
 <script>
-    import Global from '../tool/Global';
-    export default {
-        data(){
-            return {
-                userInfo:{
-                    username: '',
-                    sex: '',
-                    age: '',
-                    guanzhucount:'',
-                    guanzhuedcount:'',
-
-                },
-
-                blogList:[
-
-                ],
-                // file: '',
-                guan:{
-                    guanzhuzhe:'',
-                    beiguanzhu:'',
-                },
-                followText: '关注',
-                tmpUrl: 'none',
-                resourceInfo:{
-                    username: '',
-                    resourcename: '',
-                    url:'',
-                    timestamp: '',
-
-                },
-                resourceList:[],
-                edittedInfo:{
-                    sex:'',
-                    age:'',
-                },
-            }
+  import Global from '../tool/Global';
+  export default {
+    data() {
+      return {
+        expertInfo: {
+          id: '',
+          RealName: '',
+          Company: '',
+          PhoneNumber: '',
+          Profile: '',
+          Education: '',
+          ResourecesNumber: '',
+          Skills: [],
         },
+        resourceList: [],
+        // file: '',
+        followText: '+关注',
+        ImageName: '',
+      }
+    },
 
-        methods: {
-            modifyUser(){
-                document.getElementById("AgeInput").style.display = 'table-cell';
-                document.getElementById("SexInput").style.display = 'table-cell';
-                document.getElementById("InfoButton").style.display = 'table-cell';
-            },
-            editInfo()
-            {
-                if (this.edittedInfo.sex.trim().length == 0 || this.edittedInfo.age.trim().length == 0)
-                {
-                    alert('请填完表单');
-                }
-                else
-                {
-                    this.$axios({
-                        url: '/rest/updateUser',
-                        method: 'post',
-                        data: {
-                            userName: localStorage.getItem('user'),
-                            age: this.edittedInfo.age,
-                            sex: this.edittedInfo.sex,
-                        }
-                    }).then(res => {
-                        console.log('updateUser返回的数据' + res.data);
-                        alert('修改成功');
-                        window.location.reload();
-                    });
-                }
-            },
-            getUserInfo() {
-                var _this = this;
-                var _username = this.$route.params.username;
-                this.$axios({
-                    url: '/rest/getUserInfo',//请求的地址
-                    method: 'post',//请求的方式
-                    data: {
-                        userName: _username, password: ''
+    methods: {
+      getExpertInfo() {
+        var _this = this;
+        var _id = this.$route.params.id;
+        this.$axios({
+          url: '/expert/info',//请求的地址
+          method: 'post',//请求的方式
+          data: {
+            id: _id,
 
-                    },//请求的表单数据
-                }).then(res => {
-                    console.log(res.data);
-                    if (res.data != null) {
-                        this.userInfo.username = res.data.userName;
-                        this.userInfo.age = res.data.age;
-                        this.userInfo.sex = res.data.sex;
-                        this.userInfo.guanzhucount=res.data.guanzhucount;
-                        this.userInfo.guanzhuedcount=res.data.guanzhuedcount;
-                    }
-                });
-            },
-            getBlogInfo() {
-                var _this = this;
-                var _username = this.$route.params.username;
-                this.$axios({
-                    url: '/rest/getBlogByUser',//请求的地址
-                    method: 'post',//请求的方式
-                    data: {
-                        userName: _username, password: ''
+          },//请求的表单数据
+        }).then(res => {
+          console.log(res.data);
+          if (res.data != null) {
+            this.expertInfo.id = res.data.id;
+            this.expertInfo.RealName = res.date.RealName;
+            this.expertInfo.Company = res.date.Company;
+            this.expertInfo.PhoneNumber = res.data.PhoneNumber;
+            this.expertInfo.Profile = res.data.Profile;
+            this.expertInfo.Education = res.data.Education;
+            this.expertInfo.ResourecesNumber = res.data.ResourecesNumber;
+            this.expertInfo.Skills = res.data.Skills;
+          }
+        });
+      },
+      getResourceInfo() {
+        var _this = this;
+        var _id = this.$route.params.id;
+        this.$axios({
+          url: '/expert/resoureces',//请求的地址
+          method: 'post',//请求的方式
+          data: {
+            id: _id
 
-                    },//请求的表单数据
-                }).then(res => {
-                    if (res.data != null) {
-                        this.blogList = res.data;
-                    }
-                });
-            },
-            toGuanzhu() {
-                if (localStorage.getItem('user') == null) {
-                    this.$router.push({path: '/Login'});
-                } else if (localStorage.getItem('user') == this.$route.params.username) {
-                    this.$Message.warning('不能关注自己');
-                } else {
-                    if (this.followText == '关注'){
-                        //console.log(Global.sso_flag);
-                        //console.log(this.$route.params.username);
-                        this.$axios({
-                            url: '/rest/guanzhu',
-                            method: 'post',
-                            data: {
-                                interest: localStorage.getItem('user'), interested: this.$route.params.username,
-                            }
-                        }).then(res => {
-                            //console.log(res.data);
-                            if (res.data) {
-                                //console.log(Global.sso_flag);
-                                //console.log(this.$route.params.username);
-                                this.$Message.success('关注成功');
-                            } else {
-                                this.$Message.warning('关注失败');
-                            }
+          },//请求的表单数据
+        }).then(res => {
+          if (res.data != null) {
+            this.resourceList = res.data;
+          }
+        });
+      },
+      toGuanzhu() {
+        if (localStorage.getItem('user') == null) {
+          this.$router.push({path: '/Login'});
+        } else if (localStorage.getItem('user') == this.$route.params.username) {
+          this.$Message.warning('不能关注自己');
+        } else {
+          if (this.followText == '+关注') {
+            //console.log(Global.sso_flag);
+            //console.log(this.$route.params.username);
+            this.$axios({
+              url: '/rest/guanzhu',
+              method: 'post',
+              data: {
+                interest: localStorage.getItem('user'), interested: this.$route.params.username,
+              }
+            }).then(res => {
+              //console.log(res.data);
+              if (res.data) {
+                //console.log(Global.sso_flag);
+                //console.log(this.$route.params.username);
+                this.$Message.success('关注成功');
+              } else {
+                this.$Message.warning('关注失败');
+              }
 
-                        });
-                        //
-                        // console.log(Global.sso_flag);
-                        //     console.log(this.$route.params.username);
-                        //     this.$Message.success('关注成功');
-                        //     document.getElementById('guanzhuButton').innerHTML="取消关注";
-                    } else if (this.followText == '取消关注') {
+            });
+            //
+            // console.log(Global.sso_flag);
+            //     console.log(this.$route.params.username);
+            //     this.$Message.success('关注成功');
+            //     document.getElementById('guanzhuButton').innerHTML="取消关注";
+          } else if (this.followText == '-取消关注') {
 
 
-                        this.$axios({
-                            url: '/rest/quxiaoguanzhu',
-                            method: 'post',
-                            data: {
-                                interest: localStorage.getItem('user'), interested: this.$route.params.username,
-                            }
-                        }).then(res => {
-                            console.log(res.data);
-                            if (res.data) {
-                                console.log(localStorage.getItem('user'));
-                                console.log(this.$route.params.username);
-                                this.$Message.success('取消成功');
-                            } else {
-                                this.$Message.warning('取消失败');
-                            }
+            this.$axios({
+              url: '/rest/quxiaoguanzhu',
+              method: 'post',
+              data: {
+                interest: localStorage.getItem('user'), interested: this.$route.params.username,
+              }
+            }).then(res => {
+              console.log(res.data);
+              if (res.data) {
+                console.log(localStorage.getItem('user'));
+                console.log(this.$route.params.username);
+                this.$Message.success('取消成功');
+              } else {
+                this.$Message.warning('取消失败');
+              }
 
-                        });
+            });
 
-                        //
-                        // console.log(Global.sso_flag);
-                        //     console.log(this.$route.params.username);
-                        //     this.$Message.success('取消成功');
-                        //     document.getElementById('guanzhuButton').innerHTML="关注";
-                    }
-                    window.location.reload();
-                }
-
-            },
-
-            toEdit() {
-                this.$router.push({name: 'MdEditor', params: {username: this.$route.params.username}});
-            },
-
-            gotoBlog(addr) {
-                //this.$router.push({name: 'SingleBlog', params:{username: this.userInfo.username, blogId: addr,ret:"点赞"}});
-                if (localStorage.getItem('user') == null) {
-                    var r = "点赞";
-                    this.$router.push({
-                        name: 'SingleBlog',
-                        params: {username: this.userInfo.username, blogId: addr, ret: r}
-                    });
-                } else {
-                    //console.log(Global.sso_flag);
-                    //console.log(addr);
-                    this.$axios({
-                        url: '/rest/chadianzan',
-                        method: 'post',
-                        data: {
-                            dianzan: localStorage.getItem('user'), dianzaned: addr,
-                        }
-                    }).then(res => {
-                            console.log(res);
-                            var r;
-                            if (res.data == false) r = "取消点赞";
-                            else if (res.data == true) r = "点赞";
-                            this.$router.push({
-                                name: 'SingleBlog',
-                                params: {username: this.userInfo.username, blogId: addr, ret: r}
-                            });
-                        }
-                    )
-                }
-                //
-                // console.log(Global.sso_flag);
-                // console.log("查询点赞");
-                // console.log(addr);
-                // this.$router.push({name: 'SingleBlog', params:{username: uname, blogId: addr,ret:"点赞"}});
-                //
-            },
-
-            getGuanzhu()
-            {
-                this.$nextTick(()=>{
-                    if (localStorage.getItem('user') == this.$route.params.username)
-                    {
-                        this.followText = '关注';
-                    }
-                    else {
-                        this.$axios({
-                            url: '/rest/chaguanzhu',
-                            method: 'post',
-                            data: {
-                                interest: localStorage.getItem('user'), interested: this.$route.params.username,
-                            }
-                        }).then(res => {
-                            if (localStorage.getItem('user') == null) {
-                                this.followText = "关注";
-                                return true;
-                            } else {
-                                if (res.data == false) {
-                                    this.followText = '取消关注';
-                                    return false;
-
-                                } else if (res.data == true) {
-                                    this.followText = "关注";
-                                    return true;
-                                } else {
-                                    return false;
-                                }
-
-                            }
-                        });
-                    }
-                });
-            },
-
-
-            uploadImg: function (event) {
-
-                this.file = event.target.files[0];
-                let formData = new FormData();
-                formData.append("file", this.file);
-                this.$axios.post('rest/singlefile', formData)
-                    .then((response) => {
-                        alert('上传成功');
-                        this.tmpUrl = response.data.url;
-                        this.sendUserImg();
-                    })
-                    .catch((error)=> {
-                        alert("上传失败");
-                        console.log(error);
-                        window.location.reload();
-                    });
-
-            },
-
-            sendUserImg()
-            {
-                console.log("url: "+this.tmpUrl);
-                // 存入数据库
-                this.$axios({
-                    url: '/rest/uploadPicture',
-                    method: 'post',
-                    data: {
-                        username: localStorage.getItem('user'),
-                        resourcename: 'userImg',
-                        url: this.tmpUrl,
-                        timestamp: new Date().getTime(),
-
-                    }
-                }).then(res => {
-                    console.log('uploadPic返回的数据' + res.data);
-                });
-                window.location.reload();
-            },
-
-            loadUserImg()
-            {
-                this.$nextTick(()=>{
-                    // 获取头像
-                    //document.getElementById('userImg').src = '/rest/files/微信图片_20190517123003.jpg';
-                    this.$axios({
-                        url: '/rest/getPicture',
-                        method: 'post',
-                        data: {
-                            userName: this.$route.params.username,
-                            password: '',
-
-                        }
-                    }).then(res => {
-                        console.log('userImgSrc: ' + res.data);
-                        if(res.data) {
-                            document.getElementById('userImg').src = res.data;
-                        }
-                    });
-                });
-            },
-
-            uploadResource: function (event)
-            {
-                this.file = event.target.files[0];
-                let formData = new FormData();
-                formData.append("file", this.file);
-                this.$axios.post('rest/singlefile', formData)
-                    .then((response) => {
-                        alert('上传成功,请输入资源名称');
-                        this.resourceInfo.username = localStorage.getItem('user');
-                        this.resourceInfo.url = response.data.url;
-                        this.resourceInfo.timestamp = new Date().getTime();
-                        document.getElementById("ResourceInput").style.display = 'table-cell';
-                        document.getElementById("ResourceButton").style.display = 'table-cell';
-
-                    })
-                    .catch((error)=> {
-                        alert("上传失败");
-                        console.log(error);
-                        window.location.reload();
-                    });
-            },
-
-            uploadRes()
-            {
-                if(this.resourceInfo.resourcename.trim().length == 0)
-                {
-                    alert("请输入资源名称");
-                }
-                else
-                {
-                    console.log(this.resourceInfo.timestamp);
-                    this.$axios({
-                        url: '/rest/upload',
-                        method: 'post',
-                        data: {
-                            username: this.resourceInfo.username,
-                            resourcename: this.resourceInfo.resourcename,
-                            url:this.resourceInfo.url,
-                            timestamp: new Date().getTime(),
-                        }
-                    }).then(res => {
-                        console.log('upload返回的数据' + res.data);
-                        alert('发布成功');
-                    });
-                    window.location.reload();
-                }
-            },
-
-            getResourceList()
-            {
-                this.$nextTick(()=>{
-                    this.$axios({
-                        url: '/rest/getResource',
-                        method: 'post',
-                        data: {userName: this.$route.params.username, password: ''},
-                    }).then(res => {
-                        console.log('getResource返回的数据' + res.data);
-                        if (res.data)
-                        {
-                            this.resourceList = res.data;
-                        }
-
-                    });
-                });
-
-            },
-
-            downRes(_url)
-            {
-                window.location.href = _url;
-            },
-
-            initButton()
-            {
-                this.$nextTick(()=>{
-                    if (this.$route.params.username != localStorage.getItem('user'))
-                    {
-                        document.getElementById("postBlog").style.display = 'none';
-                        document.getElementById("postResource").style.display = 'none';
-                        document.getElementById("upImg").style.display = 'none';
-                        document.getElementById("edit").style.display = 'none';
-                    }
-                });
-            }
-
-
-
-
-
-
-        },
-
-        created() {
-            var _this = this;
-            _this.getUserInfo();
-            _this.getBlogInfo();
-            this.$root.Bus.$emit('changeStatus', '');
-            if (this.$route.params.ret)
-            {
-                this.followText = this.$route.params.ret;
-            }
-            else
-            {
-                this.getGuanzhu();
-            }
-            _this.loadUserImg();
-            _this.getResourceList();
-            _this.initButton();
-
-
-
+            //
+            // console.log(Global.sso_flag);
+            //     console.log(this.$route.params.username);
+            //     this.$Message.success('取消成功');
+            //     document.getElementById('guanzhuButton').innerHTML="关注";
+          }
+          window.location.reload();
         }
+
+      },
+
+      gotoResource(addr) {
+        //this.$router.push({name: 'SingleBlog', params:{username: this.userInfo.username, blogId: addr,ret:"点赞"}});
+        if (localStorage.getItem('user') == null) {
+          this.$router.push({
+            name: 'SingleBlog',
+            params: {username: this.expertInfo.id, id: addr}
+          });
+        } else {
+          //console.log(Global.sso_flag);
+          //console.log(addr);
+          this.$axios({
+            url: '/rest/chadianzan',
+            method: 'post',
+            data: {
+              dianzan: localStorage.getItem('user'), dianzaned: addr,
+            }
+          }).then(res => {
+              console.log(res);
+              var r;
+              if (res.data == false) r = "取消点赞";
+              else if (res.data == true) r = "点赞";
+              this.$router.push({
+                name: 'SingleBlog',
+                params: {username: this.userInfo.username, blogId: addr}
+              });
+            }
+          )
+        }
+        //
+        // console.log(Global.sso_flag);
+        // console.log("查询点赞");
+        // console.log(addr);
+        // this.$router.push({name: 'SingleBlog', params:{username: uname, blogId: addr,ret:"点赞"}});
+        //
+      },
+
+      getGuanzhu() {
+        this.$nextTick(() => {
+          if (localStorage.getItem('user') == this.$route.params.username) {
+            this.followText = '+关注';
+          } else {
+            this.$axios({
+              url: '/rest/chaguanzhu',
+              method: 'post',
+              data: {
+                interest: localStorage.getItem('user'), interested: this.$route.params.username,
+              }
+            }).then(res => {
+              if (localStorage.getItem('user') == null) {
+                this.followText = "+关注";
+                return true;
+              } else {
+                if (res.data == false) {
+                  this.followText = '-取消关注';
+                  return false;
+
+                } else if (res.data == true) {
+                  this.followText = "+关注";
+                  return true;
+                } else {
+                  return false;
+                }
+
+              }
+            });
+          }
+        });
+      },
+
+
+      loadUserImg() {
+        this.$nextTick(() => {
+          // 获取头像
+          //document.getElementById('userImg').src = '/rest/files/微信图片_20190517123003.jpg';
+          this.$axios({
+            url: '/user/getImage',
+            method: 'post',
+            data: {
+              userName: this.$route.params.username,
+              password: '',
+
+            }
+          }).then(res => {
+            console.log('userImgSrc: ' + res.data);
+            if (res.data) {
+              document.getElementById('userImg').src = res.data;
+            }
+          });
+        });
+      },
+      initButton() {
+        this.$nextTick(() => {
+          if (this.$route.params.username != localStorage.getItem('user')) {
+            document.getElementById("postBlog").style.display = 'none';
+            document.getElementById("postResource").style.display = 'none';
+            document.getElementById("upImg").style.display = 'none';
+            document.getElementById("edit").style.display = 'none';
+          }
+        });
+      }
+    },
+    created() {
+      var _this = this;
+      _this.getUserInfo();
+      _this.getBlogInfo();
+      this.$root.Bus.$emit('changeStatus', '');
+      if (this.$route.params.ret)
+      {
+        this.followText = this.$route.params.ret;
+      }
+      else
+      {
+        this.getGuanzhu();
+      }
+      _this.loadUserImg();
+      _this.getResourceList();
+      _this.initButton();
     }
+  }
 </script>
 
 <style scoped>
