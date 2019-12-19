@@ -5,22 +5,32 @@
 
       <div style="padding: 20px 40px 70px">
         <div style="text-align:center">
-          <div class="resourcetitle">关于多级火箭若干问题的探讨</div>
+          <div class="resourcetitle">{{resource.title}}</div>
           <div style="width: 100%;height: 10px;"></div>
-          <div class="inline" style="margin-left: 15px;margin-right: 15px">为民</div>
-          <div class="inline" style="margin-left: 15px;margin-right: 15px">广宇</div>
+          <div v-for="k in resource.keyword" class="inline">
+            <div class="inline" style="margin-left: 15px;margin-right: 15px">{{k}}</div>
+          </div>
+          <br>
+          <div v-for="au in resource.authors" class="inline">
+            <div class="inline" style="margin-left: 15px;margin-right: 15px">{{au}}</div>
+          </div>
+          <br>
+          <div v-for="co in resource.companies" class="inline">
+            <div class="inline" style="margin-left: 15px;margin-right: 15px">{{co}}</div>
+          </div>
           <div style="width: 100%;height: 15px;"></div>
-          <div >西北大学数学系 ××号信箱</div>
+          <!--<div >{{resource.contactInfo}}</div>-->
         </div>
 
 
         <div class="isline"></div>
         <div>
           <div style="float: left;width: 10%;font-size: 14px;text-align: right">摘要</div>
-          <div style="float: right;width: 85%;height: auto;font-size: 14px;line-height: 28px">本文提出五个问题,并在经典力学的范围内解决这五个问题。第一个问题钱学森同志提到过, (见[1]第95页)并且他本人还发表了一些极为重要的看法。我们从理论上讨论了它,得到的结果是:对多级火箭论,随着级数的无限增加其载荷最终达到的速度也将趋向无限大。第二个问题是由第一个问题引起的,它在推进剂量和本文所称的余下质量为定量的条件下探讨对火箭进行分级时VN的变化情况,得到了这时的VN是一有界量的结论,并在推进剂量和余下质量之比为常数的假定下证明了VN的收敛性算出了VN的极限值。第三个问题仅供火箭的设计工作者参考,它在允许调换多级火箭各级次序的基础上给出了为使多级火箭的载荷在最终获得最大速度的各级排列法。第四个问题是对起飞前的多级火箭而言的,对于起飞前的多级火箭论,在总推进剂量为定量的情况下其各级的推进剂量如何分配才能使载荷在最终获得的速度为最大?本文详细地探讨了这一问题,包括考虑了那分配方案的唯一性和存在性等,并用初等函数简单地表达了这一在本文中被称为最大速度方案的分配方案。第五个问题是一</div>
+          <div style="float: right;width: 85%;height: auto;font-size: 14px;line-height: 28px">{{resource.abstract}}</div>
           <div style="clear: both"></div>
         </div>
 
+        <!--
         <div class="isline"></div>
         <div style="text-align: center">
           <div class="searchbuttom" style="width: 25%;margin-left: 15px;margin-right: 15px;">查看全文</div>
@@ -41,6 +51,7 @@
           <div style="float: right;width: 85%;height: auto;font-size: 14px;line-height: 28px">[1]火箭运动的原理和物理模型[J]. 袁卫民.  物理通报. 1996(04)</div>
           <div style="clear: both"></div>
         </div>
+        -->
       </div>
 
 
@@ -60,7 +71,13 @@
     export default{
         data(){
             return {
-
+                resource: {
+                  title: 'test',
+                  authors: ['test'],
+                  companies: ['test'],
+                  abstract: 'abstract',
+                  keyword: ['keyword'],
+                }
             }
         },
         mounted(){
@@ -68,9 +85,29 @@
         },
         created(){
 
+          this.getResource();
         },
         methods: {
+            getResource(){
+              var par = new URLSearchParams();
+              par.append('id', this.$route.params.resourceId);
+              this.$axios({
+                url: '/rest/expert/findById',//请求的地址
+                method: 'post',//请求的方式
+                data: par//请求的表单数据
+              }).then(res => {
+                // 赋值
+                this.resource.title = res.data.title;
+                this.resource.authors = res.data.authorName;
+                this.resource.companies = res.data.authorCompany;
+                this.resource.abstract = res.data.abstract;
+                this.resource.keyword = res.data.keyword;
 
+              }).catch(err => {
+                console.info('报错的信息', err.response.message);
+              });
+
+            }
         },
 
     }
