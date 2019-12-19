@@ -10,27 +10,27 @@
         <div style="text-align:left;width: 60%;margin: 0 auto">
           <div class="commitline">
             <div class="inline" style="margin-right: 15px">真实姓名：</div>
-            <input class="inputbox"/>
+            <input class="inputbox" type="text" v-model="form.realName"/>
           </div>
 
           <div class="commitline">
             <div class="inline" style="margin-right: 15px">联系方式：</div>
-            <input class="inputbox"/>
+            <input class="inputbox" type="text" v-model="form.contactInfo"/>
           </div>
 
           <div class="commitline">
             <div class="inline" style="margin-right: 15px">所属单位：</div>
-            <input class="inputbox"/>
+            <input class="inputbox" type="text" v-model="form.company"/>
           </div>
 
           <div class="commitline">
             <div class="inline" style="margin-right: 15px">个人简介：</div>
-            <textarea name="a" class="inputbox" style="padding-top:8px;display:inline-block;width:70%;height:150px;">这里写内容</textarea>
+            <textarea name="a" class="inputbox" style="padding-top:8px;display:inline-block;width:70%;height:150px;" v-model="form.introduction">这里写内容</textarea>
           </div>
 
           <div class="commitline">
             <div class="inline" style="margin-right: 15px">研究领域：</div>
-            <textarea name="a" class="inputbox" style="padding-top:8px;display:inline-block;width:70%;height:80px;">这里写内容</textarea>
+            <textarea name="a" class="inputbox" style="padding-top:8px;display:inline-block;width:70%;height:80px;" v-model="form.researchArea">这里写内容</textarea>
           </div>
 
           <div class="commitline">
@@ -53,7 +53,7 @@
             </div>
           </div>
           <div style="margin-top:40px;width: 100%;text-align: center">
-            <div class="searchbuttom">确认提交</div>
+            <div class="searchbuttom" @click="submitInfo()">确认提交</div>
           </div>
         </div>
 
@@ -73,7 +73,14 @@
     export default{
         data(){
             return {
-                fileList: [{name: 'food.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}, {name: 'food2.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}]
+                form : {
+                  realName: '',
+                  contactInfo: '',
+                  company: '',
+                  introduction: '',
+                  researchArea: '',
+                },
+                fileList: [{name: 'food2.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}]
             };
         },
         mounted(){
@@ -83,6 +90,32 @@
 
         },
         methods: {
+
+          // 先暂时没管文件的事，等后端到位再试吧
+          submitInfo(){
+
+            this.$axios({
+              url: '/rest/apply/add',//请求的地址
+              method: 'post',//请求的方式
+              data: {
+                RealName: this.form.realName,
+                Company: this.form.company,
+                PhoneNumber: this.form.contactInfo,
+                Profile: this.form.introduction,
+                Education: this.form.researchArea,
+              }//请求的表单数据
+            }).then(res => {
+              // router.push ???
+              // push到哪呢
+              console.info("ok");
+            }).catch(err => {
+              console.info('报错的信息', err.response.message);
+            });
+
+
+          },
+
+
             handleRemove(file, fileList) {
                 console.log(file, fileList);
             },
