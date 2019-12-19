@@ -8,14 +8,14 @@
       </div>
       <div class="login_form">
 
-        <FormItem prop="userName">
-          <Input type="text" v-model="formInline.userName" placeholder="Username" >
+        <FormItem prop="Username">
+          <Input type="text" v-model="formInline.Username" placeholder="Username" >
   <!--          <Icon type="ios-person-outline" slot="prepend"></Icon>-->
           </Input>
         </FormItem>
         <br>
-        <FormItem prop="password">
-          <Input class="Login1" type="password" v-model="formInline.password" placeholder="Password">
+        <FormItem prop="Password">
+          <Input class="Login1" type="password" v-model="formInline.Password" placeholder="Password">
   <!--          <Icon type="ios-lock-outline" slot="prepend"></Icon>-->
           </Input>
         </FormItem>
@@ -38,8 +38,8 @@
         data() {
             return {
                 formInline: {
-                    userName: '',
-                    password: ''
+                    Username: '',
+                    Password: ''
                 },
                 ruleInline: {
                     userName: [
@@ -63,23 +63,19 @@
                 this.$refs[name].validate((valid) => {
                     if (valid) {
                         var md5 = crypto.createHash("md5");
-                        md5.update(this.formInline.password);
+                        md5.update(this.formInline.Password);
                         var hashed = md5.digest('hex');
                         this.$axios({
-                            url: '/rest/login',//请求的地址
+                            url: '/rest/user/login',//请求的地址
                             method: 'post',//请求的方式
-                            data: {userName: this.formInline.userName, password: hashed}//请求的表单数据
+                            data: {username: this.formInline.Username, password: hashed}//请求的表单数据
                         }).then(res => {
-                            console.info('后台返回的数据', res.data);
-                          Global.set_sso_lag(res.data);
-                          console.log(Global.sso_flag);
-                            if(res.data==="22222222222"){
+                            console.log('后台返回的数据1', res.data);
+                            Global.set_sso_lag(res.data);
+                            console.log(Global.sso_flag);
+                            if(res.data==="error"){
                                 console.log(res.data);
-                                this.$Message.warning('密码错误');
-                            }
-                            else if(res.data==="11111111111")
-                            {
-                                this.$Message.error('用户名不存在');
+                                this.$Message.warning('密码错误或用户名不存在');
                             }
                             else
                             {
