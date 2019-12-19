@@ -12,38 +12,188 @@
         </div>
 
         <!--      Email-->
-        <FormItem prop="Email">
+        <FormItem prop="email">
           <div>
-            <Input placeholder="用户邮箱" v-model="formInline.Email">
+            <Input placeholder="用户邮箱" v-model="formInline.email">
               <!--            <Icon type="ios-person-outline" slot="prepend"></Icon>-->
             </Input>
+          </div>
+        </FormItem>
+        <br>
+        <FormItem prop="vertifyCode">
+          <div>
+            <Input style="width: 80px" placeholder="验证码" v-model="formInline.vertifyCode">
+              <!--            <Icon type="ios-person-outline" slot="prepend"></Icon>-->
+            </Input>
+          </div>
+        </FormItem>
+        <FormItem     style="margin-left: -6px;" >
+          <div>
+            <div @click="getVertifyCode" class="headtext2" >
+              获取验证码
+            </div>
           </div>
         </FormItem>
         <br>
 
 
 
-        <FormItem prop="username">
+        <FormItem prop="userName">
           <div>
-            <Input v-model="formInline.Username" placeholder="Username">
+            <Input v-model="formInline.userName" placeholder="Username">
               <!--            <Icon type="ios-person-outline" slot="prepend"></Icon>-->
             </Input>
 
           </div>
         </FormItem>
         <br>
-        <FormItem prop="Password">
+        <FormItem prop="password">
           <!--        <div>-->
-          <Input  type="password" v-model="formInline.Password" placeholder="Password">
+          <Input  type="password" v-model="formInline.password" placeholder="Password">
             <!--          <Icon type="ios-lock-outline" slot="prepend"></Icon>-->
           </Input>
           <!--        </div>-->
         </FormItem>
         <br>
+        <FormItem prop="sex">
+          <!--        <Input type="text" v-model="formInline.sex" placeholder="sex">-->
 
+          <div>
+            <div id="example-4"  style="display: inline-block">
+              <!--             <div class="inline"> <Icon type="ios-lock-outline" slot="prepend"></Icon></div>-->
+              <div class="inline"style="color: #343434;font-size: 12px">Sex</div>
+              <div class="inline">
+                <input type="radio" id="男" value="男" v-model="formInline.sex" >
+                <label style="color:#343434 " for="男">男</label>
+              </div>
 
+              <!--             <br>-->
+              <!--             <div class="inline" style="width: 50px;height: 100px"></div>-->
+              <div class="inline">
+                <input type="radio" id="女" value="女" v-model="formInline.sex">
+                <label style="color:#343434 " for="女">女</label>
+              </div>
+              <!--             <br>-->
+              <!--             <span class="inline">Picked: {{ formInline.sex }}</span>-->
+            </div>
+            <!--           <select  v-model="formInline.sex" placeholder="sex" style="width: 150px;height: 30px" >-->
+            <!--            <option value ="男">男</option>-->
+            <!--            <option value ="女">女</option>-->
+
+            <!--          </select>-->
+          </div>
+          <!--        </Input>-->
+        </FormItem>
+        <br>
+        <FormItem prop="age">
+          <!--        <Input type="age" v-model="formInline.age" placeholder="age">-->
+          <select class="selectage" v-model="formInline.age" placeholder="age">
+            <Icon type="ios-lock-outline" slot="prepend"></Icon>
+            <option value="" disabled selected hidden>Age</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+            <option value="11">11</option>
+            <option value="12">12</option>
+            <option value="13">13</option>
+            <option value="14">14</option>
+            <option value="15">15</option>
+            <option value="16">16</option>
+            <option value="17">17</option>
+            <option value="18">18</option>
+            <option value="19">19</option>
+            <option value="20">20</option>
+            <option value="21">21</option>
+            <option value="22">22</option>
+            <option value="23">23</option>
+            <option value="24">24</option>
+            <option value="25">25</option>
+            <option value="26">26</option>
+            <option value="27">27</option>
+            <option value="28">28</option>
+            <option value="29">29</option>
+            <option value="30">30</option>
+            <option value="31">31</option>
+            <option value="32">32</option>
+            <option value="33">33</option>
+            <option value="34">34</option>
+            <option value="35">35</option>
+            <option value="36">36</option>
+            <option value="37">37</option>
+            <option value="38">38</option>
+            <option value="39">39</option>
+            <option value="40">40</option>
+            <option value="41">41</option>
+            <option value="42">42</option>
+            <option value="43">43</option>
+            <option value="44">44</option>
+            <option value="45">45</option>
+            <option value="46">46</option>
+            <option value="47">47</option>
+            <option value="48">48</option>
+            <option value="49">49</option>
+            <option value="50">50</option>
+            <option value="51">51</option>
+            <option value="52">52</option>
+            <option value="53">53</option>
+            <option value="54">54</option>
+            <option value="55">55</option>
+            <option value="56">56</option>
+            <option value="57">57</option>
+            <option value="58">58</option>
+            <option value="59">59</option>
+            <option value="60">60</option>
+            <option value="61">61</option>
+            <option value="62">62</option>
+            <option value="63">63</option>
+            <option value="64">64</option>
+            <option value="65">65</option>
+            <option value="66">66</option>
+            <option value="67">67</option>
+            <option value="68">68</option>
+            <option value="69">69</option>
+            <option value="70">70</option>
+            <option value="71">71</option>
+            <option value="72">72</option>
+            <option value="73">73</option>
+            <option value="74">74</option>
+            <option value="75">75</option>
+            <option value="76">76</option>
+            <option value="77">77</option>
+            <option value="78">78</option>
+            <option value="79">79</option>
+            <option value="80">80</option>
+            <option value="81">81</option>
+            <option value="82">82</option>
+            <option value="83">83</option>
+            <option value="84">84</option>
+            <option value="85">85</option>
+            <option value="86">86</option>
+            <option value="87">87</option>
+            <option value="88">88</option>
+            <option value="89">89</option>
+            <option value="90">90</option>
+            <option value="91">91</option>
+            <option value="92">92</option>
+            <option value="93">93</option>
+            <option value="94">94</option>
+            <option value="95">95</option>
+            <option value="96">96</option>
+            <option value="97">97</option>
+            <option value="98">98</option>
+            <option value="99">99</option>
+
+          </select>
 
           <!--        </Input>-->
+        </FormItem>
         <br>
         <FormItem>
           <div type="primary" @click="handleSubmitsignup('formInline')" class="headtext4" style="margin-bottom: 20px">注册</div>
@@ -67,9 +217,12 @@
     data() {
       return {
         formInline: {
-            Username: '',
-            Password: '',
-            Email:'',
+            userName: '',
+            password: '',
+            sex:'',
+            age:'',
+            email:'',
+            vertifyCode: '',
         },
           tmpCode: '',
         ruleInline: {
@@ -109,22 +262,24 @@
           handleSubmitsignup(name) {
               this.$refs[name].validate((valid) => {
                   if (valid) {
+                      if (this.formInline.vertifyCode == this.tmpCode) {
                           var md5 = crypto.createHash("md5");
-                          md5.update(this.formInline.Password);
+                          md5.update(this.formInline.password);
                           var hashed = md5.digest('hex');
-                          console.log(this.formInline.Email);
                           this.$axios({
-                              url: '/rest/user/register',//请求的地址
+                              url: '/rest/signup',//请求的地址
                               method: 'post',//请求的方式
                               data: {
-                                  username: this.formInline.Username,
+                                  userName: this.formInline.userName,
                                   password: hashed,
-                                  email: this.formInline.Email,
+                                  sex: this.formInline.sex,
+                                  age: this.formInline.age,
+                                  mail: this.formInline.email
                               }//请求的表单数据
                           }).then(res => {
                               console.info('后台返回的数据', res.data);
                               // 返回true的话就跳转到编辑器（暂时
-                              if (res.data==="success") {
+                              if (res.data) {
                                   this.$router.push({path: '/Login'});
                               } else {
                                   this.$Message.error('用户名已存在');
@@ -133,6 +288,11 @@
                           }).catch(err => {
                               console.info('报错的信息', err.response.message);
                           });
+                      }
+                      else
+                      {
+                          this.$message.error('验证码错误!');
+                      }
 
                   }
                   else {
@@ -142,7 +302,24 @@
               })
           },
 
-
+          getVertifyCode()
+          {
+              this.$axios({
+                  url: '/rest/mail',//请求的地址
+                  method: 'post',//请求的方式
+                  data: {
+                      userName:'',
+                      password:'',
+                      sex: '',
+                      age: '',
+                      mail: this.formInline.email
+                  },//请求的表单数据
+              }).then(res => {
+                  if (res.data != null) {
+                      this.tmpCode = res.data;
+                  }
+              });
+          }
 
       },
 
