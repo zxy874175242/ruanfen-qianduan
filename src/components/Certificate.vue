@@ -108,6 +108,7 @@
               // router.push ???
               // push到哪呢
               console.info("ok");
+              this.$router.push({name: 'UserPage', params:{username: localStorage.getItem("user")}});
             }).catch(err => {
               console.info('报错的信息', err.response.message);
             });

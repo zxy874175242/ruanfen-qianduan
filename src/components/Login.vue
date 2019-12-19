@@ -80,8 +80,8 @@
                             else
                             {
                                 this.submit('注销');
-                                localStorage.setItem("user", this.formInline.userName);
-                                this.$router.push({name: 'UserPage', params:{username: this.formInline.userName, ret:"关注"}});
+                                localStorage.setItem("user", this.formInline.Username);
+                                this.$router.push({name: 'UserPage', params:{username: this.formInline.Username, ret:"关注"}});
                             }
 
                         }).catch(err => {

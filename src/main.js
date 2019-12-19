@@ -63,7 +63,7 @@ const routes = [
   {path: '/Manageuser', name: 'Manageuser', component: Manageuser},
   {path: '/Preview', name: 'Preview', component: Preview},
   {path: '/Release', name: 'Release', component: Release},
-  {path: '/Resource', name: 'Resource', component: Resource},
+  {path: '/r/:resource', name: 'Resource', component: Resource},
   {path: '/Result', name: 'Result', component: Result},
   {path: '/search/:type/:keyword', name: 'Post', component: Post},
   {path: '/u/:username/uploadFile', name: 'uploadFile', component: UploadFile, meta:{requireAuth: true}},
