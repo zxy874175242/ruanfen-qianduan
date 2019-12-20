@@ -182,6 +182,7 @@
               //console.log(uname);
               var par = new URLSearchParams();
               par.append('follow', _id);
+              par.append('certificateId', localStorage.getItem('id'));
               this.$axios({
                     url:'/rest/expert/isfollow',
                     method:'post',

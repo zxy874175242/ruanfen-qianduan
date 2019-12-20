@@ -234,6 +234,7 @@
             this.userInfo.content=res.data.content;
             this.userInfo.Id=res.data.id;
             this.userInfo.expertId=res.data.expertId;
+            localStorage.setItem("id",this.userInfo.Id);
           }
         });
       },
@@ -309,11 +310,11 @@
         });
       },
       gotoprofessor(){
-        this.$router.push({path:'/Professor'})
+        this.$router.push({name:'Professor', params:{pid:this.userInfo.expertId}});
       },
       release(){
 
-        this.$router.push({name:'/Release',params:{pid:this.userInfo.expertId}})
+        this.$router.push({name:'Release',params:{pid:this.userInfo.expertId}});
       }
 
 
@@ -327,7 +328,7 @@
       var _this = this;
       _this.getUserInfo();
       _this.loadUserImg();
-      localStorage.setItem("id",this.userInfo.Id);
+
 
 
     }
