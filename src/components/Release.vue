@@ -144,7 +144,7 @@
                     console.log(res.data);
                     console.log(this.formInline.Title);
                     this.$Message.warning('成功');
-                    this.$router.push({path: '/Professor'});
+                    this.$router.push({name: 'Professor', params: {pid: this.$route.params.pid}});
                   }
                   else if(res.data==="error")
                   {
