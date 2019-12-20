@@ -6,31 +6,40 @@
 
       <div style="padding: 10px 40px 70px">
         <div>
-          <div style="color: #454545;font-size: 20px;margin-bottom: 5px;" >未处理申请(99+)</div>
+          <div style="color: #454545;font-size: 20px;margin-bottom: 5px;" >未处理申请</div>
           <div style="width: 150px;height: 3px;background: black"></div>
           <div class ="isline2"></div>
         </div>
 
 
         <div>
-          <router-link :to="{name: 'Resource', params:{type:'blog', keyword: 'all'}}">
-            <div class="resultcard">
-              <div style="vertical-align: bottom;margin-bottom: 5px">
-                <div class="cardtitle" >是个学者1</div>
-                <div class="cardauthor" >北京航空航天大学</div>
-                <div class="cardyear" >20191021</div>
-              </div>
+<!--          <router-link :to="{name: 'Resource', params:{type:'blog', keyword: 'all'}}">-->
+<!--            <div class="resultcard">-->
+<!--              <div style="vertical-align: bottom;margin-bottom: 5px">-->
+<!--                <div class="cardtitle" >是个学者1</div>-->
+<!--                <div class="cardauthor" >北京航空航天大学</div>-->
+<!--                <div class="cardyear" >20191021</div>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </router-link>-->
+<!--          <router-link :to="{name: 'Resource', params:{type:'blog', keyword: 'all'}}">-->
+<!--            <div class="resultcard">-->
+<!--              <div style="vertical-align: bottom;margin-bottom: 5px">-->
+<!--                <div class="cardtitle" >是个学者2</div>-->
+<!--                <div class="cardauthor" >北京航空航天大学软件学院</div>-->
+<!--                <div class="cardyear" >20191022</div>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </router-link>-->
+
+          <div class="resultcard">
+            <div style="vertical-align: bottom;margin-bottom: 5px" v-for="blog in applylist">
+              <div class="cardtitle" @click="gotoRenzheng(blog.id)" >{{blog.content.realName}}</div>
+              <div class="cardauthor" >{{blog.content.company}}</div>
+              <div class="cardyear" >{{blog.time}}</div>
             </div>
-          </router-link>
-          <router-link :to="{name: 'Resource', params:{type:'blog', keyword: 'all'}}">
-            <div class="resultcard">
-              <div style="vertical-align: bottom;margin-bottom: 5px">
-                <div class="cardtitle" >是个学者2</div>
-                <div class="cardauthor" >北京航空航天大学软件学院</div>
-                <div class="cardyear" >20191022</div>
-              </div>
-            </div>
-          </router-link>
+          </div>
+
         </div>
       </div>
 
@@ -47,17 +56,34 @@
     export default{
         data(){
             return {
-
+              applylist:[],
             }
         },
         mounted(){
 
+
         },
         created(){
-
+          this.getapplylist();
         },
         methods: {
-
+          gotoRenzheng(id)
+          {
+            this.$router.push({name: 'Certificateinfo', params: {cid: id}});
+          },
+          getapplylist()
+          {
+            this.$axios({
+              url: '/rest/apply/getAll',//请求的地址
+              method: 'get',//请求的方式
+              data: {},
+            }).then(res => {
+              if (res.data != null) {
+                console.log(res.data);
+                this.applylist = res.data;
+              }
+            });
+          }
         },
 
     }
