@@ -112,8 +112,9 @@
             var par = new URLSearchParams();
             par.append('name', keyword);
             if (this.$route.params.type == "blog") {
+              par.append('result', this.blogList);
               this.$axios({
-                url: '/rest/resources/findinresult',
+                url: '/rest/resources/findInResources',
                 method: 'post',
                 data: par
               }).then(res => {
@@ -123,6 +124,7 @@
               });
             }
             else{
+              par.append('result', this.userList);
               this.$axios({
                 url: '/rest/resources/findInExpert',  // TODO: 改
                 method: 'post',
@@ -221,6 +223,7 @@
 
           getBlogList(keyword)
           {
+            /*
             // 获取推荐的
             if(keyword == 'all')
             {
@@ -233,10 +236,14 @@
                   this.blogList = res.data;
                   this.listLen = res.data.length;
                 }
+              }).catch(err=>{
+                console.info(err);
               });
             }
             // 获取关键词的
             else {
+            */
+
               var par = new URLSearchParams();
               par.append('name', keyword);
               this.$axios({
@@ -250,8 +257,7 @@
                 }
               });
             }
-          }
-        },
+          },
 
     }
 
