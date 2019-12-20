@@ -21,34 +21,42 @@
         <el-tabs v-model="activeName" @tab-click="handleClick">
           <el-tab-pane label="基本搜索" name="first">
             <div style="margin-bottom: 20px">
-              <input class="searchbox" type="text" name="fname" />
-              <select class="searchoption" type="text" name="fname" >
+              <input class="searchbox" type="text" name="fname" v-model="formInline.keyword"/>
+              <select class="searchoption" type="text" name="fname" v-model="formInline.type" >
 
-                <option value="篇名">篇名</option>
-                <option value="作者">作者</option>
+                <option value=1 v-model="formInline.type" id="篇名">篇名</option>
+                <option value=2 v-model="formInline.type" id="作者">作者</option>
               </select>
-              <router-link :to="{name: 'Result', params:{type:'blog', keyword: 'all'}}"><div class = "searchbuttom "><div>搜索</div></div></router-link>
+<!--              <router-link :to="{name: 'Result', params:{type:'blog', keyword: 'all'}}"><div class = "searchbuttom "><div>搜索</div></div></router-link>-->
+             <div class = "searchbuttom " ><div @click="searchSth()">搜索</div></div>
             </div>
           </el-tab-pane>
-          <el-tab-pane label="高级搜索" name="second">
-            <div style="margin-bottom: 20px">
-              <input class="searchbox" type="text" name="fname" />
-              <router-link :to="{name: 'Result', params:{type:'blog', keyword: 'all'}}"><div class = "searchbuttom "><div>搜索</div></div></router-link>
-            </div>
-          </el-tab-pane>
+<!--          <el-tab-pane label="高级搜索" name="second">-->
+<!--            <div style="margin-bottom: 20px">-->
+<!--              <input class="searchbox" type="text" name="fname" />-->
+<!--              <router-link :to="{name: 'Result', params:{type:'blog', keyword: 'all'}}"><div class = "searchbuttom "><div>搜索</div></div></router-link>-->
+<!--            </div>-->
+<!--          </el-tab-pane>-->
 <!--          <el-tab-pane label="角色管理" name="third">角色管理</el-tab-pane>-->
 <!--          <el-tab-pane label="定时任务补偿" name="fourth">定时任务补偿</el-tab-pane>-->
         </el-tabs>
-        <div style="width: 100%;height: 600px">
-          <div style="float:left;width: 25%;height: 100%;background: #f1f1f1">
+        <div style="width: 100%">
 
-          </div>
-          <div style="float:right;width: 70%;height: 100%;background: #f1f1f1">
 
+          <div v-for="blog in tuijianlist" class="resultcard">
+            <div>
+              <div class="item">
+                <!--          <div style="height: 5px;width: 100%;background: #6aa0b2"></div>-->
+                <div class="posttitle" @click="gotoBlog(blog.username, blog.id)">{{blog.title}}</div>
+                <div class="status">发布于： {{blog.time}}| 作者：{{blog.authorName.toString()}}</div>
+              </div>
+            </div>
           </div>
+
         </div>
-      </div>
 
+      </div>
+      <div style="clear:both;"></div>
     </div>
     <div style="background: black;height:100px;width: 100%"  >
     </div>
@@ -67,7 +75,7 @@
                    type:'',
                },
                 blogList: [],
-
+                tuijianlist:[],
             }
         },
         mounted(){
@@ -82,12 +90,14 @@
             handleClick(tab, event) {
                 console.log(tab, event);
             },
-            gotoBlog(uname, addr)
+            gotoBlog(uname, _id)
             {
+              this.$router.push({name: 'Resource', params: {resourceId: _id}});
+              /*
                 if(localStorage.getItem('user') == null)
                 {
                     var r="点赞";
-                    this.$router.push({name: 'SingleBlog', params: {username: uname, blogId: addr, ret: r}});
+                    this.$router.push({name: 'Resource', params: {resourceId: addr, ret: r}});
                 }
                 else {
                     // this.$router.push({name: 'SingleBlog', params:{username: uname, blogId: addr}});
@@ -108,7 +118,8 @@
                             this.$router.push({name: 'SingleBlog', params: {username: uname, blogId: addr, ret: r}});
                         }
                     )
-                }
+                         
+                }*/
             },
             getBlogList(keyword)
             {
@@ -143,35 +154,56 @@
                     });
                 }
             },
+            gettuijian()
+            {
+              this.$axios({
+                url: '/rest/resources/recommand',//请求的地址
+                method: 'get',//请求的方式
+              }).then(res => {
+                if (res.data != null) {
+                  console.log(res.data);
+                  this.tuijianlist = res.data;
+                }
+              });
+            },
+          searchUser() {
+            this.$router.push({name: 'Result', params: {type:'user', keyword: this.formInline.keyword}});
+          },
+          searchBlog()
+          {
+            this.$router.push({name: 'Result', params: {type:'blog', keyword: this.formInline.keyword}});
+          },
+          searchSth()
+          {
 
-            searchUser() {
-                this.$router.push({name: 'Post', params: {type:'user', keyword: this.formInline.keyword}});
-            },
-            searchBlog()
+            if (this.formInline.keyword.trim().length == 0)
             {
-                this.$router.push({name: 'Post', params: {type:'blog', keyword: this.formInline.keyword}});
-            },
-            searchSth()
-            {
-                if (this.formInline.keyword.trim().length == 0)
-                {
-                    this.$Message.error('请输入检索关键词');
-                }
-                else {
-                    // var selectBox = document.getElementById('searchType');
-                    // blog mode
-                    if (this.formInline.type == 1) {
-                        this.searchBlog();
-                    }
-                    // user mode
-                    else {
-                        this.searchUser();
-                    }
-                }
-                window.location.reload();
+              this.$Message.error('请输入检索关键词');
             }
-        },
+            else {
+              // var selectBox = document.getElementById('searchType');
+              // blog mode
+              if (this.formInline.type == 1) {
+                console.log("篇名");
+                console.log(this.formInline.keyword);
+                this.searchBlog();
+                window.location.reload();
+              }
+              // user mode
+              else {
+                console.log("作者");
+                console.log(this.formInline.keyword);
+                this.searchUser();
+                window.location.reload();
+              }
+            }
 
+          }
+        },
+        created()
+        {
+            this.gettuijian();
+        }
     }
 
 
@@ -186,6 +218,25 @@
   }
   .el-tabs__item:hover {
     color: #63b2c3;
+  }
+  .cardtitle{
+    color: rgba(0, 0, 0,0.8);
+    font-size: 20px;font-weight: bold;
+    display: inline-block;
+  }
+  .resultcard{
+    width: 100%;
+    background: #f1f1f1;
+    border-left: #3e606b solid 3px;
+    padding: 10px 10px 10px 20px;
+    margin-bottom: 7px;
+    margin-top: 8px;
+
+  }
+  .resultcard:hover{
+
+    border-left: #63b2c3 solid 5px;
+    transition: border-left-width 0.3s,border-left-color 0.3s;
   }
   .homebody{
     /*display: flex;*/
@@ -208,6 +259,25 @@
     display: inline-block;
     vertical-align:middle;
 
+  }
+  .searchbuttom {
+    display: inline-block;
+    height: 40px;
+    width:15%;
+    background: #3e606b;
+    text-align: center;
+    vertical-align:middle;
+    line-height: 40px;
+    font-size: 14px;
+    color: #ffffff;
+    border-radius: 10px;
+    margin-left: 5px;
+  }
+  .searchbuttom:hover{
+    background: #63b2c3;
+  }
+  .searchbuttom:active{
+    background: black;
   }
   .searchbox {
     display: inline-block;
@@ -254,5 +324,50 @@
     /*border-color: #a6dadd;*/
   }
 
+  .article-list, .article {
+    margin-right: 30%;
+    margin-bottom: 25px;
+    margin-top: 20px;
+    background: #fff;
+    /*padding: 20px 30px;*/
+    transition: height 5s ease;
+    -webkit-box-shadow: 0 0 10px 0px rgba(0,0,0,.1);
+    /*box-shadow: 0 0 3px 2px rgba(0,0,0,.2);*/
+  }
+
+  .article-list .item  {
+    margin-bottom: 25px;
+    width: 100%;
+  }
+
+  .article-list .item .title,
+  .article .title {
+    color: #454545;
+    font-size: 22px;
+    font-weight: 700;
+  }
+
+  .article-list .item .status,
+  .article .status {
+    font-size: 13px;
+    color: #ccc;
+  }
+
+  .article-list .item > *,
+  .article > * {
+    margin: 10px 0;
+  }
+  .content{
+
+  }
+  .bordertype{
+    border-top:5px solid #000000;
+    padding-top: 8px;
+    transition: border-top-color 0.1s ease,border-top-width 0.3s;
+  }
+  .bordertype:hover{
+    border-top:8px solid #a6dadd;
+    padding-top: 8px;
+  }
 
 </style>

@@ -9,7 +9,7 @@
           <div style="color: #454545;font-size: 20px;margin-bottom: 5px;" >检索结果</div>
           <div style="width: 100px;height: 3px;background: black"></div>
           <div class ="isline2"></div>
-
+  <!--
           <div class="fiterline">
             <div class="inline2">文献主题:</div>
             <div class="inline2">语音合成</div>
@@ -27,49 +27,54 @@
             <div class="inline2">语音合成</div>
             <div class="inline2">卷积神经网络</div>
           </div>
+-->
 
         </div>
 
         <div>
-
           <div class ="isline"style="margin-top: 15px"></div>
-          <div style="margin-top: 15px;margin-left: 15px">关键词“”的检索结果，共XX条</div>
+          <div style="margin-top: 15px;margin-left: 15px">关键词{{this.$route.params.keyword}}的检索结果，共{{this.listLen}}条</div>
+          <!--这下面怪怪的，注意一下 -->
           <div style="margin-bottom: 20px">
-            <input class="searchbox" type="text" name="fname" />
-            <router-link :to="{name: 'Result', params:{type:'blog', keyword: 'all'}}"><div class = "searchbuttom "><div>结果中搜索</div></div></router-link>
+            <input class="searchbox" type="text" name="fname" v-model="keyword2"/>
+            <div class = "searchbuttom " @click="searchInResult"><div >结果中搜索</div></div>
           </div>
-
         </div>
 
         <div>
-          <router-link :to="{name: 'Resource', params:{type:'blog', keyword: 'all'}}">
+          <div v-for="blog in blogList">
+          <div>
             <div class="resultcard">
             <div style="vertical-align: bottom;margin-bottom: 5px">
-              <div class="cardtitle" >是文章的题目</div>
-              <div class="cardauthor" >是个作者</div>
-              <div class="cardyear" >2019</div>
+              <div class="cardtitle" @click="gotoBlog(blog.username, blog.id)">{{blog.title}}</div>
+              <div class="inline" v-for="au in blog.authorName[0]"><div class="cardauthor" >{{au}}</div></div>
+              <div class="cardyear" >{{blog.time}}</div>
             </div>
-            <div style="color: rgba(0,0,0,0.6)">层叠样式表(英文全称：Cascading Style Sheets)是一种用来表现HTML（标准通用标记…</div>
+              <!-- 这是啥 -->
+            <!--<div style="color: rgba(0,0,0,0.6)">层叠样式表(英文全称：Cascading Style Sheets)是一种用来表现HTML（标准通用标记…</div>-->
           </div>
-          </router-link>
-          <router-link :to="{name: 'Resource', params:{type:'blog', keyword: 'all'}}">
-            <div class="resultcard">
-            <div style="vertical-align: bottom;margin-bottom: 5px">
-              <div class="cardtitle" >是文章的题目</div>
-              <div class="cardauthor" >是个作者</div>
-              <div class="cardyear" >2019</div>
-            </div>
-            <div style="color: rgba(0,0,0,0.6)">层叠样式表(英文全称：Cascading Style Sheets)是一种用来表现HTML（标准通用标记…</div>
           </div>
-          </router-link>
-        </div>
-      </div>
+          </div>
 
+          <div v-for="u in userList">
+            <div>
+              <div class="resultcard">
+                <div style="vertical-align: bottom;margin-bottom: 5px">
+                  <div class="cardtitle" @click="gotoExpert(u.id)">{{u.realName}}</div>
+                  <div class="cardauthor" >{{u.company}}</div>
+                  <div class="cardyear" >{{u.phoneNumber}}</div>
+                </div>
+                <!--<div style="color: rgba(0,0,0,0.6)">层叠样式表(英文全称：Cascading Style Sheets)是一种用来表现HTML（标准通用标记…</div>-->
+              </div>
+            </div>
+          </div>
+        </div>
     </div>
     <!--    Footer-->
     <div style="background: black;height:100px;width: 100%"  >
     </div>
 
+  </div>
   </div>
 </template>
 
@@ -78,18 +83,181 @@
     export default{
         data(){
             return {
-
+              blogList: [],
+              userList: [],
+              listLen: 0,
+              keyword2:'',
             }
         },
         mounted(){
 
         },
         created(){
-
+            this.$root.Bus.$emit('changeStatus', '');
+            this.blogList = [];
+            this.userList = [];
+            if (this.$route.params.type == 'blog')
+            {
+              this.getBlogList(this.$route.params.keyword);
+            }
+            else
+            {
+              this.getUserList(this.$route.params.keyword);
+            }
         },
         methods: {
 
-        },
+          searchInResult(keyword)
+          {
+            var par = new URLSearchParams();
+            par.append('name', keyword);
+            if (this.$route.params.type == "blog") {
+              par.append('result', this.blogList);
+              this.$axios({
+                url: '/rest/resources/findInResources',
+                method: 'post',
+                data: par
+              }).then(res => {
+                console.log(res.data);
+                this.blogList = res.data;
+
+              });
+            }
+            else{
+              par.append('result', this.userList);
+              this.$axios({
+                url: '/rest/resources/findInExpert',  // TODO: 改
+                method: 'post',
+                data: par
+              }).then(res => {
+                console.log(res.data);
+                this.blogList = res.data;
+
+              });
+            }
+          },
+
+
+          gotoBlog(uname, id)
+          {
+            this.$router.push({name: 'Resource', params: {resourceId: id}});
+            /*
+            if(localStorage.getItem('user') == null)
+            {
+              var r="点赞";
+              this.$router.push({name: 'Resource', params: {resourceId: id, ret: r}});
+            }
+            else {
+              var par = new URLSearchParams();
+              par.append('name', uname);
+              this.$axios({
+                url: '/rest/follow/isfollow',
+                method: 'post',
+                data: par
+              }).then(res => {
+                  console.log(res);
+                  var r;
+                  if (res.data == false) r = "取消点赞";
+                  else if (res.data == true) r = "点赞";
+                  else r = uname;
+                  this.$router.push({name: 'SingleBlog', params: {username: uname, blogId: addr, ret: r}});
+                }
+              )
+            }
+            */
+
+          },
+          gotoExpert(_id)
+          {
+            console.log(_id);
+            //
+            if(localStorage.getItem('user') == null)
+            {
+              var r="关注";
+              this.$router.push({name: 'Professor', params: {pid: _id}});
+            }
+            else
+            {
+              //console.log(Global.sso_flag);
+              //console.log(uname);
+              var par = new URLSearchParams();
+              par.append('follow', _id);
+              this.$axios({
+                    url:'/rest/expert/isfollow',
+                    method:'post',
+                    data:par
+                  }).then(res=>
+                  {
+                    //console.log(res);
+                    var r;
+                    if(localStorage.getItem('user') == null)
+                      r="关注";
+                    else
+                    {
+                      if(res.data==false) r="取消关注";
+                  else if(res.data==true) r="关注";
+                  else r='error';
+                }
+                this.$router.push({name: 'Professor', params: {pid: _id,ret:r}});
+              });
+            }
+            //
+          },
+
+          getUserList(keyword)
+          {
+            var par = new URLSearchParams();
+            par.append('name', keyword);
+            this.$axios({
+              url: '/rest/expert/find',//请求的地址
+              method: 'post',//请求的方式
+              data: par,//请求的表单数据
+            }).then(res => {
+              if (res.data != null)
+              {
+                this.userList = res.data;
+                this.listLen = res.data.length;
+              }
+            });
+          },
+
+          getBlogList(keyword)
+          {
+            /*
+            // 获取推荐的
+            if(keyword == 'all')
+            {
+              this.$axios({
+                url: '/rest/resources/recommand',//请求的地址
+                method: 'get',//请求的方式
+                data: {},//请求的表单数据
+              }).then(res => {
+                if (res.data != null) {
+                  this.blogList = res.data;
+                  this.listLen = res.data.length;
+                }
+              }).catch(err=>{
+                console.info(err);
+              });
+            }
+            // 获取关键词的
+            else {
+            */
+
+              var par = new URLSearchParams();
+              par.append('name', keyword);
+              this.$axios({
+                url: '/rest/resources/find',//请求的地址
+                method: 'post',//请求的方式
+                data: par,//请求的表单数据
+              }).then(res => {
+                if (res.data != null) {
+                  this.blogList = res.data;
+                  this.listLen = res.data.length;
+                }
+              });
+            }
+          },
 
     }
 

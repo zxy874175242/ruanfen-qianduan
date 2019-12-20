@@ -98,16 +98,16 @@
               url: '/rest/apply/add',//请求的地址
               method: 'post',//请求的方式
               data: {
-                RealName: this.form.realName,
-                Company: this.form.company,
-                PhoneNumber: this.form.contactInfo,
-                Profile: this.form.introduction,
-                Education: this.form.researchArea,
+                realName: this.form.realName,
+                company: this.form.company,
+                phoneNumber: this.form.contactInfo,
+                profile: this.form.introduction,
+                education: this.form.researchArea,
+                certicifateId: localStorage.getItem('id'),
               }//请求的表单数据
             }).then(res => {
-              // router.push ???
-              // push到哪呢
               console.info("ok");
+              this.$router.push({name: 'UserPage', params:{username: localStorage.getItem("user")}});
             }).catch(err => {
               console.info('报错的信息', err.response.message);
             });
