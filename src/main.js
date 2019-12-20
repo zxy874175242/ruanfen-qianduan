@@ -58,7 +58,7 @@ const routes = [
   {path: '/p/:pid', name: 'Professor', component: Professor},
   {path: '/Approval', name: 'Approval', component: Approval},
   {path: '/Certificate', name: 'Certificate', component: Certificate},
-  {path: '/Certificateinfo', name: 'Certificateinfo', component: Certificateinfo},
+  {path: '/Certificateinfo/:cid', name: 'Certificateinfo', component: Certificateinfo},
   {path: '/Manageuser', name: 'Manageuser', component: Manageuser},
   {path: '/Preview', name: 'Preview', component: Preview},
   {path: '/Release/:pid', name: 'Release', component: Release},

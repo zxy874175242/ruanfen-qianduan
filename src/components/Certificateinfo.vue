@@ -4,57 +4,57 @@
 
       <!--      <router-link :to="{name: 'Certificateinfo', params:{type:'blog', keyword: 'all'}}"><div class="searchbuttom">Certificateinfo</div></router-link>-->
       <div class = "ctitle">申请专家认证</div>
-      <div style="text-align: center">认证编号：20191022</div>
+      <div style="text-align: center">认证编号：{{certificateinfo.id}}</div>
       <div style="padding: 20px 50px 70px">
         <div style="text-align:left;width: 60%;margin: 0 auto">
           <div class="commitline">
             <div class="inline" style="margin-right: 15px">真实姓名：</div>
-            <div class="inline">是个学者</div>
+            <div class="inline">{{certificateinfo.name}}</div>
           </div>
 
           <div class="commitline">
             <div class="inline" style="margin-right: 15px">联系方式：</div>
-            <div class="inline">17610612380</div>
+            <div class="inline">{{certificateinfo.telephone}}</div>
           </div>
 
           <div class="commitline">
             <div class="inline" style="margin-right: 15px">所属单位：</div>
-            <div class="inline">北京航空航天大学</div>
+            <div class="inline">{{certificateinfo.placeofwork}}</div>
           </div>
 
           <div class="commitline">
             <div class="inline" style="margin-right: 15px">个人简介：</div>
-            <div class="inline" style="padding-top:8px;display:inline-block;width:70%">我也不知道写什么啊啊啊啊啊啊啊啊啊啊啊我也不知道写什么啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊</div>
+            <div class="inline" style="padding-top:8px;display:inline-block;width:70%">{{certificateinfo.introduction}}</div>
           </div>
 
           <div class="commitline">
             <div class="inline" style="margin-right: 15px">研究领域：</div>
-            <div class="inline" style="padding-top:8px;display:inline-block;width:70%">我也不知道写什么啊啊啊啊啊啊啊啊啊啊啊我也不知道写什么啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊</div>
+            <div class="inline" style="padding-top:8px;display:inline-block;width:70%">{{certificateinfo.researcharea}}</div>
 
           </div>
-
+<!--
           <div class="commitline">
             <div class="inline"style="margin-right: 15px">发表文献：</div>
             <div class="inline">
-              <div class="downbuttom">点击下载</div>
-              <div class="downbuttom">点击下载</div>
+              <div class="downbuttom" >{{certificateinfo.fileList[0].name}}</div>
+              <div class="downbuttom" >{{certificateinfo.fileList[1].name}}</div>
 
             </div>
           </div>
-
+!-->
           <div class="commitline" style="margin-bottom: 20px">
             <div class="inline" style="margin-right: 15px">审批结果：</div>
             <div class="inline"style="margin-right: 20px"><input @click="fillInReason"  checked="checked" name="result" type="radio" value="1" />通过 </div>
             <div class="inline"><input @click="fillInReason2" name="result" type="radio" value="2" />不通过 </div>
           </div>
 
-          <div id = "refusereason"class="commitline" style="margin-top:20px;display: none">
+          <div id = "refusereason" class="commitline" style="margin-top:20px;display: none" >
             <div class="inline" style="margin-right: 15px">拒绝理由：</div>
-            <textarea name="a" class="inputbox" style="padding-top:8px;display:inline-block;width:70%;height:100px;">这里写内容</textarea>
+            <textarea v-model="certificateinfo.reason" class="inputbox" placeholder="请输入拒绝理由" ></textarea>
           </div>
 
           <div style="margin-top:40px;width: 100%;text-align: center">
-            <div class="searchbuttom">确认提交</div>
+            <div class="searchbuttom" @click = "uploadresult">确认提交</div>
           </div>
         </div>
 
@@ -74,27 +74,84 @@
     export default{
         data(){
             return {
-                fileList: [{name: 'food.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}, {name: 'food2.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}],
-                radio:'1'
+                certificateinfo:{
+                  id:'',
+                  name:'me',
+                  placeofwork:'beihang',
+                  telephone:'111',
+                  introduction:'hello world',
+                  researcharea:'computer',
+                  fileList:[{name:'the first',url:'kong'},{name:'',url:''}],
+                  result:'1',
+                  reason:'',
+                }
             };
         },
         mounted(){
 
         },
         created(){
-
+          var _this = this;
+          _this.getcertificateinfo();
         },
         methods: {
 
             fillInReason(){
                 // obj.style.属性名 = “属性值”;
                 document.getElementById("refusereason").style.display = 'none';
+                this.certificateinfo.result='1';
             },
             fillInReason2(){
                 // obj.style.属性名 = “属性值”;
                 document.getElementById("refusereason").style.display = 'inline';
+                this.certificateinfo.result='0';
 
-            }
+            },
+            getcertificateinfo(){
+              var _this = this;
+              var _id = this.$route.params.cid;
+              var par = new URLSearchParams();
+              par.append('applyid', _id);
+              this.$axios({
+                url: '/rest/apply/getById',//请求的地址
+                method: 'post',//请求的方式
+                data: par,//请求的表单数据
+              }).then(res => {
+                console.log(res.data);
+                if (res.data != null) {
+                  this.certificateinfo.id = this.$route.params.cid;
+                  this.certificateinfo.name=res.data.content.realName;
+                  this.certificateinfo.telephone=res.data.content.phoneNumber;
+                  this.certificateinfo.researcharea=res.data.content.education;
+                  this.certificateinfo.introduction=res.data.content.profile;
+                  this.certificateinfo.placeofwork=res.data.content.company;
+                }
+              });
+            },
+            uploadresult(){
+              var _this=this;
+              var _id=this.$route.params.cid;
+              var par = new URLSearchParams();
+              par.append('applyid', _id);
+              par.append('result', this.certificateinfo.result);
+              par.append('reason', this.certificateinfo.reason);
+              this.$axios({
+                url:'/rest/apply/check',
+                method:'post',
+                data:par,
+              }).then(res => {
+                console.log(res.data);
+                if (res.data == "success") {
+                  alert("提交成功");
+                  // router push
+                  this.$router.push({name: 'Approval'});
+                }
+              }).catch((error)=> {
+                alert("提交失败");
+                console.log(error);
+                window.location.reload();
+              });
+            },
         },
 
     }
