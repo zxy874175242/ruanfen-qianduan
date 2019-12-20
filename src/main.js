@@ -61,7 +61,7 @@ const routes = [
   {path: '/Certificateinfo', name: 'Certificateinfo', component: Certificateinfo},
   {path: '/Manageuser', name: 'Manageuser', component: Manageuser},
   {path: '/Preview', name: 'Preview', component: Preview},
-  {path: '/Release', name: 'Release', component: Release},
+  {path: '/Release/:pid', name: 'Release', component: Release},
   {path: '/r/:resourceId', name: 'Resource', component: Resource},
   {path: '/search/:type/:keyword', name: 'Result', component: Result},
   {path: '/u/:username/uploadFile', name: 'uploadFile', component: UploadFile, meta:{requireAuth: true},
