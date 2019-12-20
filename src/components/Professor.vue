@@ -36,7 +36,7 @@
           <div class="userheadcontent" style="margin-bottom: 30px">
 
             <div style="position: relative;width: 90px;overflow: hidden;height: 90px;margin-right: 15px;margin-left: 5px">
-                <img id="userImg" style="position: absolute;height: 90px">
+                <img id="userImg" style="position: absolute;height: 90px" src="../assets/logo.png">
             </div>
 
             <div class="userheadleft">
@@ -198,14 +198,14 @@
       },
       toGuanzhu() {
         var params=new URLSearchParams();
-        params.append("follow",localStorage.getItem("id"));
-        params.append("certificateId",this.expertInfo.id);
+        params.append("follow",this.expertInfo.id);
+        params.append("certificateId",localStorage.getItem("id"));
         if (localStorage.getItem('id') == null) {
           this.$router.push({path: '/Login'});
         } else if (localStorage.getItem('id') == this.$route.params.id) {
           this.$Message.warning('不能关注自己');
         } else {
-          if (this.followText == '+关注') {
+          if (this.followText == "+关注") {
             //console.log(Global.sso_flag);
             //console.log(this.$route.params.username);
             this.$axios({
@@ -213,11 +213,11 @@
               method: 'post',
               data: params
             }).then(res => {
-              //console.log(res.data);
               if (res.data==="success") {
                 //console.log(Global.sso_flag);
                 //console.log(this.$route.params.username);
                 this.$Message.success('关注成功');
+                this.followText="-取消关注"
               } else {
                 this.$Message.warning('关注失败');
               }
@@ -239,6 +239,7 @@
               console.log(res.data);
               if (res.data==="success") {
                 this.$Message.success('取消成功');
+                this.followText="+关注";
               } else {
                 this.$Message.warning('取消失败');
               }
@@ -251,13 +252,46 @@
             //     this.$Message.success('取消成功');
             //     document.getElementById('guanzhuButton').innerHTML="关注";
           }
-          window.location.reload();
-        }
 
+        }
+        this.$router.push({name: 'Professor', params: {pid: this.expertInfo.id,ret:this.followText}})
+      },
+      chaGuanzhu()
+      {
+        //
+        if(localStorage.getItem('user') == null)
+        {
+          this.followText="+关注";
+        }
+        else
+        {
+          //console.log(Global.sso_flag);
+          //console.log(uname);
+          var par = new URLSearchParams();
+          par.append("follow", this.expertInfo.id);
+          par.append("certificateId", localStorage.getItem('id'));
+          this.$axios({
+            url:'/rest/expert/isfollow',
+            method:'post',
+            data:par
+          }).then(res=>
+          {
+            //console.log(res);
+            if(localStorage.getItem('user') == null)
+              this.followText="+关注";
+            else
+            {
+              if(res.data==false) this.followText="+关注";
+              else if(res.data==true) this.followText="-取消关注";
+              else this.followText='error';
+            }
+          });
+        }
+        //
       },
 
       gotoResource(addr) {
-        this.$router.push({path: 'Resource',params:{resourceId: addr}});
+        this.$router.push({name: 'Resource',params:{resourceId: addr}});
       },
 
 
@@ -283,6 +317,7 @@
       },
     },
     created() {
+
       var _this = this;
       _this.getExpertInfo();
       _this.getResourceInfo();
@@ -291,6 +326,8 @@
       {
         this.followText = this.$route.params.ret;
       }
+      else
+        this.chaGuanzhu();
     }
   }
 </script>
