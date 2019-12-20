@@ -109,19 +109,30 @@
 
           searchInResult(keyword)
           {
-            this.blogList = [];
             var par = new URLSearchParams();
             par.append('name', keyword);
-            this.$axios({
-              url:'/rest/resources/findinresult',
-              method:'post',
-              data:par
-            }).then(res=>
-            {
-              console.log(res.data);
-              blogList = res.data;
+            if (this.$route.params.type == "blog") {
+              this.$axios({
+                url: '/rest/resources/findinresult',
+                method: 'post',
+                data: par
+              }).then(res => {
+                console.log(res.data);
+                this.blogList = res.data;
 
-            });
+              });
+            }
+            else{
+              this.$axios({
+                url: '/rest/resources/findinresult',  // TODO: 改
+                method: 'post',
+                data: par
+              }).then(res => {
+                console.log(res.data);
+                this.blogList = res.data;
+
+              });
+            }
           },
 
 
