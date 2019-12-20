@@ -75,7 +75,7 @@
           {
             this.$axios({
               url: '/rest/apply/getAll',//请求的地址
-              method: 'get',//请求的方式
+              method: 'post',//请求的方式
               data: {},
             }).then(res => {
               if (res.data != null) {

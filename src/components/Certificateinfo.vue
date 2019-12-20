@@ -131,6 +131,7 @@
             uploadresult(){
               var _this=this;
               var _id=this.$route.params.cid;
+
               var par = new URLSearchParams();
               par.append('applyid', _id);
               par.append('result', this.certificateinfo.result);
@@ -141,6 +142,22 @@
                 data:par,
               }).then(res => {
                 console.log(res.data);
+                if (this.certificateinfo.result == '1') {
+                  var par1 = new URLSearchParams();
+                  par1.append('applyid', _id);
+                  this.$axios({
+                    url: '/rest/apply/delete',
+                    method: 'post',
+                    data: par1,
+                  }).then(res => {
+                    console.log(res.data);
+                    if (res.data == "success") {
+                      console.log("delete ok");
+                    }
+                  }).catch((error) => {
+                    console.log(error);
+                  });
+                }
                 if (res.data == "success") {
                   alert("提交成功");
                   // router push
