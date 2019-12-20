@@ -92,7 +92,7 @@
               var par = new URLSearchParams();
               par.append('id', this.$route.params.resourceId);
               this.$axios({
-                url: '/rest/expert/findById',//请求的地址
+                url: '/rest/expert/findById',//请求的地址  // 这里应该改成查找单个资源的接口
                 method: 'post',//请求的方式
                 data: par//请求的表单数据
               }).then(res => {

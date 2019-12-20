@@ -29,7 +29,6 @@ import BlogPage from "./components/BlogPage";
 import MdEditorExsited from "./components/MdEditorExsited";
 import Home from './components/Home';
 import User from './components/User';
-import Post from './components/Post';
 import UploadFile from './components/UploadFile';
 import Professor from './components/Professor';
 import Approval from "./components/Approval";
@@ -56,7 +55,7 @@ const routes = [
   {path: '/u/:username/MdEditor/:blogId', name: 'MdEditorExsited', component: MdEditorExsited, meta:{requireAuth: true}},
   {path: '/Home', name: 'Home', component: Home},
   {path: '/u/:username', name: 'UserPage', component: User},
-  {path: '/Professor', name: 'Professor', component: Professor},
+  {path: '/p/:pid', name: 'Professor', component: Professor},
   {path: '/Approval', name: 'Approval', component: Approval},
   {path: '/Certificate', name: 'Certificate', component: Certificate},
   {path: '/Certificateinfo', name: 'Certificateinfo', component: Certificateinfo},
@@ -65,7 +64,6 @@ const routes = [
   {path: '/Release', name: 'Release', component: Release},
   {path: '/r/:resourceId', name: 'Resource', component: Resource},
   {path: '/search/:type/:keyword', name: 'Result', component: Result},
-  {path: '/search/:type/:keyword', name: 'Post', component: Post},
   {path: '/u/:username/uploadFile', name: 'uploadFile', component: UploadFile, meta:{requireAuth: true},
   },
   //{path: '/hello', name: 'hello', component: Hello},

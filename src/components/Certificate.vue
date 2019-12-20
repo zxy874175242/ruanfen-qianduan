@@ -103,6 +103,7 @@
                 phoneNumber: this.form.contactInfo,
                 profile: this.form.introduction,
                 education: this.form.researchArea,
+                certicifateId: localStorage.getItem('id'),
               }//请求的表单数据
             }).then(res => {
               console.info("ok");

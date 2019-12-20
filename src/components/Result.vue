@@ -124,7 +124,7 @@
             }
             else{
               this.$axios({
-                url: '/rest/resources/findinresult',  // TODO: 改
+                url: '/rest/resources/findInExpert',  // TODO: 改
                 method: 'post',
                 data: par
               }).then(res => {
@@ -238,7 +238,7 @@
             // 获取关键词的
             else {
               var par = new URLSearchParams();
-              par.append('name', keyword)
+              par.append('name', keyword);
               this.$axios({
                 url: '/rest/resources/find',//请求的地址
                 method: 'post',//请求的方式
