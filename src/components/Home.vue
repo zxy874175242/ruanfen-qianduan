@@ -90,12 +90,14 @@
             handleClick(tab, event) {
                 console.log(tab, event);
             },
-            gotoBlog(uname, addr)
+            gotoBlog(uname, _id)
             {
+              this.$router.push({name: 'Resource', params: {resourceId: _id}});
+              /*
                 if(localStorage.getItem('user') == null)
                 {
                     var r="点赞";
-                    this.$router.push({name: 'SingleBlog', params: {username: uname, blogId: addr, ret: r}});
+                    this.$router.push({name: 'Resource', params: {resourceId: addr, ret: r}});
                 }
                 else {
                     // this.$router.push({name: 'SingleBlog', params:{username: uname, blogId: addr}});
@@ -116,7 +118,8 @@
                             this.$router.push({name: 'SingleBlog', params: {username: uname, blogId: addr, ret: r}});
                         }
                     )
-                }
+                         
+                }*/
             },
             getBlogList(keyword)
             {
